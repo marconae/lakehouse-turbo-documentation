@@ -32,16 +32,12 @@
     window.$docsify = {
         name: 'Lakehouse Turbo by Exasol',
 
-        // Alias config
-        alias: {
-            '/.*/_sidebar.md': `${repoBase}/_sidebar.md`,
-            '/.*/_navbar.md': `${repoBase}/_navbar.md`,
-        },
+        // Fixing repo base if on GitHub Actionts repo
+        basePath: repoBase,
 
         // Sidebar Configuration
         auto2top: true,
         loadSidebar: true,
-        relativePath: true,
         maxLevel: 0,
         // Set subMaxLevel to 0 to remove automatic display of page table of contents (TOC) in Sidebar
         subMaxLevel: 3,
