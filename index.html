@@ -27,12 +27,13 @@
 <script>
     const isOnGitHub = location.hostname.endsWith('github.io') && location.pathname.split('/').length > 2;
     const repoBase = isOnGitHub ? `/${location.pathname.split('/')[1]}` : '';
+    console.log('On GitHub: ' + isOnGitHub + ' - basePath: ' + repoBase);
 
     // Docsify Configuration (see https://docsify.js.org/#/configuration)
     window.$docsify = {
         name: 'Lakehouse Turbo by Exasol',
 
-        // Fixing repo base if on GitHub Actionts repo
+        // Fixing repo base if on GitHub Actions repo
         basePath: repoBase,
 
         // Sidebar Configuration
