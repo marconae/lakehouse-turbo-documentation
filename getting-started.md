@@ -13,7 +13,9 @@ Lakehouse Turbo offers a free trial that is not limited in features and enables 
 Required steps:
 
 1. Signup for Lakehouse Turbo on [lakehouseturbo.com](https://www.lakehouseturbo.com)
-2. Add a new database and select Release stream “Innovation Release” <br /> ![Add a database for Lakehouse Turbo](assets/add-db.png)
+2. Add a new database:
+    * ensure that the selected region matches the region of the S3 bucket of your Data Lake to avoid cross-region data transfer costs
+    * select Release stream “Innovation Release” <br /> ![Add a database for Lakehouse Turbo](assets/add-db.png)
 3. After the database has been created, activate Lakehouse Turbo by clicking “Lakehouse” in the left menubar, selecting the created database and click “Activate” <br /> ![Add a database for Lakehouse Turbo](assets/activate-turbo.png)
 
 ## Step 2: Setup Databricks Workspace
@@ -44,17 +46,21 @@ Required steps:
 Principal “Lakehouse Turbo Principal” is given the privilege preset named "Data Reader" that contains all required privileges:
 <img src="assets/databricks-permissions-data-reader.png" alt="Priviledge 'Data Reader'" style="width:70%;"/>
 
+### Configure the OAuth Principal in Lakehouse Turbo
+
+
+
 ## Step 3: Setup and connect your S3
 
 Lakehouse Turbo requires read-only access to the S3 bucket that contains the storage layer of the Data Lakehouse. 
 To get access, Lakehouse Turbo will transparently assume an IAM role in your AWS account.
 
-**Get prerequisites**
+### Get prerequisites
 
-You first need the __AWS account ID__ and the __External ID__ of your Lakehouse Turbo deployment: Navigate to "Lakehouse" in the menu, select your database and activate the Settings tab to copy both the __External ID__ and the __AWS Account ID__ as outlined in the screenshot below:
+You first need to get the __AWS account ID__ and the __External ID__ of your Lakehouse Turbo deployment: Navigate to "Lakehouse" in the menu, select your database and activate the Settings tab to copy both the __External ID__ and the __AWS Account ID__ as outlined in the screenshot below:
 ![Lakehouse Turbo Settings](assets/turbo-settings.png)
 
-**Setup AWS role**
+### Setup IAM role in AWS
 
 Login to the AWS that hosts the S3 bucket of the Data Lakehouse, open IAM and follow these steps:
 
@@ -63,10 +69,22 @@ Login to the AWS that hosts the S3 bucket of the Data Lakehouse, open IAM and fo
 * Choose "AWS account" as "Trusted entity type"
 * Select "Another AWS Account" and enter the obtained __AWS Account ID__ from step "Get prerequisites"
 * Choose option "Require External ID" and enter the __External ID__ from step "Get prerequisites"
-* Add the permission policy "AmazonS3ReadOnlyAccess"
+* Add the permission policy "AmazonS3ReadOnlyAccess" and limit the access to the S3 bucket (if desired)
 * And finally create the role
 
-**Grant access to the role within S3**
+Example:
+![Configure access from an external AWS account](assets/aws-iam-role.png)
+
+### Save the Role ARN in Lakehouse Turbo
+
+Once the role is created, switch back to the Lakehouse Turbo Settings and follow these steps:
+
+* Enter the ARN of the role in the field "Customer Role ARN" <br /> ![Lakehouse Turbo Settings: set role](assets/turbo-set-role.png)
+* Save the changes
+
+### Grant access to the role within S3 (for cross-account access)
+
+> This step is only required if the created IAM role is in a different AWS account than the S3 bucket! 
 
 Login to the AWS that hosts the S3 bucket of the Data Lakehouse, open S3 and follow these steps:
 
