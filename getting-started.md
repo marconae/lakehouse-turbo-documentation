@@ -35,11 +35,11 @@ Required steps:
 * Add the Service Principal to your workspace by [following the Databricks documentation](https://docs.databricks.com/aws/en/admin/users-groups/manage-service-principals#assign-a-service-principal-to-a-workspace)
 * Grant privileges to the Service Principal on those catalogs, schemas or tables that should be mirrored by Lakehouse Turbo
   * Recommended: select privilege preset “Data Reader”
-  * or assign manually
-    * Prerequisite: USE SCHEMA 
-    * Read: EXECUTE
-    * Read: READ VOLUME
-    * Read: SELECT
+  * or assign privileges manually
+    * `USE SCHEMA` (Prerequisite)
+    * `EXECUTE` (Read)
+    * `READ VOLUME` (Read)
+    * `SELECT` (Read)
 
 **Example**
 
@@ -48,6 +48,12 @@ Principal “Lakehouse Turbo Principal” is given the privilege preset named "D
 
 ### Configure the OAuth Principal in Lakehouse Turbo
 
+Once the role is created, switch back to the Lakehouse Turbo Settings and provide
+* the host of your Databricks workspace
+* the OAuth Service Principal Client ID
+* the OAuth Service Principal Secret
+
+Example: <br /> ![Configure OAuth Principal in Lakehouse Turbo](assets/turbo-oauth.png)
 
 
 ## Step 3: Setup and connect your S3
@@ -57,8 +63,7 @@ To get access, Lakehouse Turbo will transparently assume an IAM role in your AWS
 
 ### Get prerequisites
 
-You first need to get the __AWS account ID__ and the __External ID__ of your Lakehouse Turbo deployment: Navigate to "Lakehouse" in the menu, select your database and activate the Settings tab to copy both the __External ID__ and the __AWS Account ID__ as outlined in the screenshot below:
-![Lakehouse Turbo Settings](assets/turbo-settings.png)
+You first need to get the __AWS account ID__ and the __External ID__ of your Lakehouse Turbo deployment: Navigate to "Lakehouse" in the menu, select your database and activate the Settings tab to copy both the __External ID__ and the __AWS Account ID__ as outlined in the screenshot below: <br /> ![Lakehouse Turbo Settings](assets/turbo-settings.png)
 
 ### Setup IAM role in AWS
 
@@ -72,8 +77,7 @@ Login to the AWS that hosts the S3 bucket of the Data Lakehouse, open IAM and fo
 * Add the permission policy "AmazonS3ReadOnlyAccess" and limit the access to the S3 bucket (if desired)
 * And finally create the role
 
-Example:
-![Configure access from an external AWS account](assets/aws-iam-role.png)
+Example: <br /> ![Configure access from an external AWS account](assets/aws-iam-role.png)
 
 ### Save the Role ARN in Lakehouse Turbo
 
