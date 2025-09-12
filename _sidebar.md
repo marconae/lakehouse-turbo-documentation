@@ -1,4 +1,5 @@
 - [Read Me](README)
 - [Getting Started](getting-started.md)
 - [Features](feature-overview.md)
+- [Smart Caching](smart-caching.md)
 - [Signup for free](https://www.lakehouseturbo.com)
